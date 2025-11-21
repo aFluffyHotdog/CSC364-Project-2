@@ -1,4 +1,9 @@
-<?php require 'utils.php'; require_login(); require 'db.php'; if($_SERVER['REQUEST_METHOD']==='POST'){ $db=get_db(); $uid=current_user()['id']; $stmt=$db->prepare('INSERT INTO messages(user_id, content) VALUES (?, ?)'); $stmt->execute([$uid, $_POST['content']]); header('Location:index.php'); exit; } site_header('Post Message'); ?>
+<?php require 'utils.php'; require_login(); require 'db.php'; if($_SERVER['REQUEST_METHOD']==='POST'){ $db=get_db(); $uid=current_user()['id']; 
+  $stmt=$db->prepare('INSERT INTO messages(user_id, content) VALUES (?, ?)'); 
+  $stmt->execute([$uid, $_POST['content']]); 
+  header('Location:index.php'); 
+  exit; } 
+  site_header('Post Message'); ?>
 
 <section class="page-header">
   <h1 class="page-title">Compose Transmission</h1>

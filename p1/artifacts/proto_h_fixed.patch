@@ -1,0 +1,11 @@
+--- mini_proto.h	2025-11-20 14:15:49.203000136 -0500
++++ artifacts/mini_proto_fordiff.h	2025-11-20 20:10:30.697829504 -0500
+@@ -22,7 +22,7 @@
+ 
+    Returns number of bytes written, or 0 on error.
+    If out_buf == NULL, returns the size that would be needed (non-zero). */
+-size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap);
++size_t encode_record(const record_t *rec, uint8_t **out_buf, size_t out_cap);
+ 
+ /* Decodes one record. On success:
+      - *out points to a newly allocated record_t that you own

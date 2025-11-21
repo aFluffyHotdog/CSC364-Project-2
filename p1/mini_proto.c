@@ -3,22 +3,33 @@
 #include <string.h>
 #include <stdio.h>
 
-size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
+size_t encode_record(const record_t *rec, uint8_t **out_buf, size_t out_cap) {
     size_t name_len = strlen(rec->name);
-    size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
+    size_t space;
+    if (rec->score_count > 1000) {
+        space = 1 + name_len + 1 + 4 + 2 * 1000;    }
+    else {
+        space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
+    }
 
-    if (!out_buf) return space;
+    uint8_t *temp_buf = malloc(space);
 
     size_t off = 0;
-    out_buf[off++] = (uint8_t)name_len;
-    memcpy(out_buf + off, rec->name, name_len); off += name_len;
+    temp_buf[off++] = (uint8_t)name_len;
+    memcpy(temp_buf + off, rec->name, name_len); off += name_len;
 
-    out_buf[off++] = rec->age;
+    if (rec->age > 150) {
+        temp_buf[off++] = 150;
+    }
+    else {
+        temp_buf[off++] = rec->age;
+    }
 
-    memcpy(out_buf + off, &rec->score_count, 4); off += 4;
-    memcpy(out_buf + off, rec->scores, 2 * rec->score_count);
+    memcpy(temp_buf + off, &rec->score_count, 4); off += 4;
+    memcpy(temp_buf + off, rec->scores, 2 * rec->score_count);
 
     off += 2 * rec->score_count;
+    *out_buf = temp_buf;
     return off;
 }
 

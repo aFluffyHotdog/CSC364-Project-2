@@ -1,0 +1,73 @@
+--- mini_proto.c	2025-11-20 20:08:38.249461713 -0500
++++ artifacts/mini_proto_fordiff.c	2025-11-20 15:21:22.698386691 -0500
+@@ -3,37 +3,32 @@
+ #include <string.h>
+ #include <stdio.h>
+ 
+-size_t encode_record(const record_t *rec, uint8_t **out_buf, size_t out_cap) {
+-    size_t name_len = strlen(rec->name);
+-    size_t space;
+-    if (rec->score_count > 1000) {
+-        space = 1 + name_len + 1 + 4 + 2 * 1000;    }
+-    else {
+-        space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
++size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
++    if (!rec) return 0;
++    if(rec->score_count != 0 && rec->score_count != (sizeof(rec->scores)/sizeof(rec->scores[0]))) {
++        printf("hey what the hell are you doing");
++        return 0;
+     }
++    size_t name_len = strlen(rec->name);
++    size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
+ 
+-    uint8_t *temp_buf = malloc(space);
++    if (!out_buf) return space;
+ 
+     size_t off = 0;
+-    temp_buf[off++] = (uint8_t)name_len;
+-    memcpy(temp_buf + off, rec->name, name_len); off += name_len;
++    out_buf[off++] = (uint8_t)name_len;
++    memcpy(out_buf + off, rec->name, name_len); off += name_len;
+ 
+-    if (rec->age > 150) {
+-        temp_buf[off++] = 150;
+-    }
+-    else {
+-        temp_buf[off++] = rec->age;
+-    }
++    out_buf[off++] = rec->age;
+ 
+-    memcpy(temp_buf + off, &rec->score_count, 4); off += 4;
+-    memcpy(temp_buf + off, rec->scores, 2 * rec->score_count);
++    memcpy(out_buf + off, &rec->score_count, 4); off += 4;
++    memcpy(out_buf + off, rec->scores, 2 * rec->score_count);
+ 
+     off += 2 * rec->score_count;
+-    *out_buf = temp_buf;
+     return off;
+ }
+ 
+ size_t decode_record(const uint8_t *buf, size_t len, record_t **out) {
++    if (!buf) return 0;
+     size_t off = 0;
+     uint8_t name_len = buf[off++];
+ 
+@@ -57,9 +52,16 @@
+     return off;
+ }
+ 
+-void free_record(record_t *rec) {
+-    if (!rec) return;
++void free_record_safe(record_t **rec_ptr) {
++    if (!rec_ptr) {
++        return;
++    }
++    record_t *rec = *rec_ptr;
++    if (!rec) {
++        return;
++    }
+     free(rec->scores);
+     free(rec);
++    *rec_ptr = NULL; 
+ }
+ 
