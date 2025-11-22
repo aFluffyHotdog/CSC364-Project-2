@@ -1,0 +1,13 @@
+--- mini_proto.c	2025-11-21 09:24:53
++++ artifacts/bug2/mini_proto.c	2025-11-21 09:26:30
+@@ -4,6 +4,10 @@
+ #include <stdio.h>
+ 
+ size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
++    if(rec->score_count != 0 && rec->score_count != (sizeof(rec->scores)/sizeof(rec->scores[0]))) {
++        printf("score_count doesn't match the number of scores given");
++        return;
++    }
+     size_t name_len = strlen(rec->name);
+     size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
+ 

@@ -1,0 +1,22 @@
+--- mini_proto.c	2025-11-21 09:24:53
++++ artifacts/bug5/mini_proto.c	2025-11-21 13:48:38
+@@ -46,8 +46,15 @@
+     return off;
+ }
+ 
+-void free_record(record_t *rec) {
+-    if (!rec) return;
++void free_record(record_t **rec_ptr) {
++    if (!rec_ptr) {
++        return;
++    }
++    record_t *rec = *rec_ptr;
++    if (!rec) {
++        return;
++    }
+     free(rec->scores);
+     free(rec);
+-}
++    *rec_ptr = NULL; 
++}
+\ No newline at end of file

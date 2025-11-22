@@ -1,0 +1,33 @@
+--- mini_proto.c	2025-11-21 09:24:53
++++ artifacts/bug4/mini_proto.c	2025-11-21 13:47:29
+@@ -5,7 +5,14 @@
+ 
+ size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
+     size_t name_len = strlen(rec->name);
+-    size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
++    size_t space;
++    if(rec->score_count > 1000) {
++        space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
++    } 
++    else {
++        printf("score_count value is unsupported");
++        return;
++    }
+ 
+     if (!out_buf) return space;
+ 
+@@ -13,7 +20,13 @@
+     out_buf[off++] = (uint8_t)name_len;
+     memcpy(out_buf + off, rec->name, name_len); off += name_len;
+ 
+-    out_buf[off++] = rec->age;
++    if (rec->age > 255) {
++        printf("invalid age\n");
++        return -1;
++    }
++    else {
++        out_buf[off++] = rec->age;
++    }
+ 
+     memcpy(out_buf + off, &rec->score_count, 4); off += 4;
+     memcpy(out_buf + off, rec->scores, 2 * rec->score_count);

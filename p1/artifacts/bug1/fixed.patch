@@ -1,0 +1,10 @@
+--- mini_proto.c	2025-11-21 09:24:53
++++ artifacts/bug1/mini_proto.c	2025-11-21 09:25:41
+@@ -23,6 +23,7 @@
+ }
+ 
+ size_t decode_record(const uint8_t *buf, size_t len, record_t **out) {
++    if (!buf) return 0;
+     size_t off = 0;
+     uint8_t name_len = buf[off++];
+ 

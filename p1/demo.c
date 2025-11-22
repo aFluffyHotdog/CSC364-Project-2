@@ -26,10 +26,9 @@ static void print_record(const char *label, const record_t *r) {
 
 int main(void) {
     record_t in = {0};
-    char s[6] = "alice";
-    strncpy(in.name, s, MAX_NAME - 1);
-    in.age = 10234;
-    in.score_count = 999999999999999999999999999999999;
+    strncpy(in.name, "alice", MAX_NAME - 1);
+    in.age = 23;
+    in.score_count = 3;
     uint16_t tmp_scores[] = {100, 250, 999};
     in.scores = tmp_scores;
 
@@ -60,4 +59,3 @@ int main(void) {
     free_record(out);
     return 0;
 }
-

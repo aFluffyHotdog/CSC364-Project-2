@@ -22,7 +22,7 @@ typedef struct {
 
    Returns number of bytes written, or 0 on error.
    If out_buf == NULL, returns the size that would be needed (non-zero). */
-size_t encode_record(const record_t *rec, uint8_t **out_buf, size_t out_cap);
+size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap);
 
 /* Decodes one record. On success:
      - *out points to a newly allocated record_t that you own
@@ -31,7 +31,7 @@ size_t encode_record(const record_t *rec, uint8_t **out_buf, size_t out_cap);
 size_t decode_record(const uint8_t *buf, size_t len, record_t **out);
 
 /* Frees a record allocated by decode_record */
-void free_record(record_t *rec);
+void free_record(record_t **rec_ptr);
 
 #ifdef __cplusplus
 }

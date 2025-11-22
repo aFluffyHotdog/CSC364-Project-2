@@ -20,7 +20,7 @@ You are given `p1/mini_proto.c` and `p1/mini_proto.h`, a tiny record-serializati
 
 `mini_proto.h` exposes three public functions:
 
-```c
+```cy
 size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap);
 size_t decode_record(const uint8_t *buf, size_t len, record_t **out);
 void   free_record(record_t *rec);

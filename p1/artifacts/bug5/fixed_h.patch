@@ -1,0 +1,11 @@
+--- mini_proto.h	2025-11-21 09:19:19
++++ artifacts/bug5/mini_proto.h	2025-11-21 13:49:41
+@@ -31,7 +31,7 @@
+ size_t decode_record(const uint8_t *buf, size_t len, record_t **out);
+ 
+ /* Frees a record allocated by decode_record */
+-void free_record(record_t *rec);
++void free_record(record_t **rec_ptr);
+ 
+ #ifdef __cplusplus
+ }

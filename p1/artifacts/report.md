@@ -43,7 +43,7 @@ which can leak whatever's on the stack past the array.
 ```
 If we kept the array of scores to the default length of 3, it will cause the print function to read too many addresses, eventually leading to an illegal address and a segfault.
 - Rootcause: since the program defines the types of these 2 fields as `uint8` and `uint32`, when a number bigger than the 8 or 32 bit gets input into the struct, only the least significant 8/32 will be kept. This sometimes lead to values that don't make sense such as limiting an age to be less than 150 or having a hard 1000 cap to the number of scores.
-- Fix: I will implement a hard limit to these variables and hard clip the values if they go beyond it. This will reduce the risk of segfaulting since we're less likely to be reading too far in areas of memory that we don't have access to.
+- Fix: I will implement a hard limit to these variables and return -1 if they go beyond it. This will reduce the risk of segfaulting since we're less likely to be reading too far in areas of memory that we don't have access to.
 
 
 - Rootcause: The types for `age` and `score_count` 

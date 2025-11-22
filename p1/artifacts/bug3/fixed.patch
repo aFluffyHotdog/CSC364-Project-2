@@ -1,0 +1,10 @@
+--- mini_proto.c	2025-11-21 09:24:53
++++ artifacts/bug3/mini_proto.c	2025-11-21 09:31:02
+@@ -4,6 +4,7 @@
+ #include <stdio.h>
+ 
+ size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
++    if (!rec) return 0;
+     size_t name_len = strlen(rec->name);
+     size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
+ 

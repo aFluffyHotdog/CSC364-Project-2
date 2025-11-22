@@ -4,11 +4,6 @@
 #include <stdio.h>
 
 size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
-    if (!rec) return 0;
-    if(rec->score_count != 0 && rec->score_count != (sizeof(rec->scores)/sizeof(rec->scores[0]))) {
-        printf("hey what the hell are you doing");
-        return 0;
-    }
     size_t name_len = strlen(rec->name);
     size_t space = 1 + name_len + 1 + 4 + 2 * rec->score_count;
 
@@ -28,7 +23,6 @@ size_t encode_record(const record_t *rec, uint8_t *out_buf, size_t out_cap) {
 }
 
 size_t decode_record(const uint8_t *buf, size_t len, record_t **out) {
-    if (!buf) return 0;
     size_t off = 0;
     uint8_t name_len = buf[off++];
 
@@ -52,7 +46,7 @@ size_t decode_record(const uint8_t *buf, size_t len, record_t **out) {
     return off;
 }
 
-void free_record_safe(record_t **rec_ptr) {
+void free_record(record_t **rec_ptr) {
     if (!rec_ptr) {
         return;
     }
@@ -64,4 +58,3 @@ void free_record_safe(record_t **rec_ptr) {
     free(rec);
     *rec_ptr = NULL; 
 }
-
